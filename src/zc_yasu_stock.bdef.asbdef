@@ -1,0 +1,20 @@
+projection implementation in class ZBP_C_YASU_STOCK unique;
+strict ( 2 );
+use draft;
+define behavior for ZC_YASU_STOCK alias Stock
+use etag
+
+{
+  use create;
+  use update;
+  use delete;
+
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Resume;
+  use action Prepare;
+
+  use action calcStockAmountDeep;
+  use action calcStockAmount;
+}
