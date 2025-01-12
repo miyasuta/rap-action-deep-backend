@@ -1,0 +1,12 @@
+abstract;
+strict ( 2 );
+with hierarchy;
+
+define behavior for ZA_PLANT alias Plant
+{
+  association _location;
+}
+
+define behavior for ZA_LOCATION alias Location
+{
+}

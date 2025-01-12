@@ -37,6 +37,36 @@ annotate view ZC_YASU_STOCK with
   } ]
   ProductId;
   
+  @EndUserText.label: 'Plant'
+  @UI.identification: [ {
+    position: 21 
+  }]
+  @UI.lineItem: [ {
+    position: 21
+  }]
+  @UI.selectionField: [ {
+    position: 21 
+  } ]  
+  @Consumption.valueHelpDefinition: [{ entity: { name: 'ZI_YASU_PLANT', element: 'Plant' }, useForValidation: true }]
+  @Consumption.filter.selectionType: #SINGLE
+  @Consumption.filter.mandatory: true
+  Plant;
+  
+    @EndUserText.label: 'Location'
+  @UI.identification: [ {
+    position: 22 
+  }]
+  @UI.lineItem: [ {
+    position: 22 
+  } ]
+  @UI.selectionField: [ {
+    position: 22 
+  } ]
+    @Consumption.valueHelpDefinition: [{ entity: { name: 'ZI_YASU_LOCATION', element: 'Location' },
+                                         additionalBinding: [{ element: 'Plant', localElement: 'Plant' }],
+                                         useForValidation: true }]
+  Location;  
+  
   @EndUserText.label: 'Price'
   @UI.identification: [ {
     position: 30 , 

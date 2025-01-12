@@ -16,5 +16,6 @@ use etag
   use action Prepare;
 
   use action calcStockAmountDeep;
+  use action calcStockAmountAll;
   use action calcStockAmount;
 }

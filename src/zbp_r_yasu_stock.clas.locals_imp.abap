@@ -8,12 +8,18 @@ CLASS lhc_zr_yasu_stock DEFINITION INHERITING FROM cl_abap_behavior_handler.
       calcStockAmountDeep FOR MODIFY
         IMPORTING keys FOR ACTION Stock~calcStockAmountDeep RESULT result,
       calcStockAmount FOR MODIFY
-        IMPORTING keys FOR ACTION Stock~calcStockAmount RESULT result.
+        IMPORTING keys FOR ACTION Stock~calcStockAmount RESULT result,
+      calcStockAmountAll FOR MODIFY
+        IMPORTING keys FOR ACTION Stock~calcStockAmountAll RESULT result.
 
     TYPES: BEGIN OF ty_key,
              id       TYPE sysuuid_x16,
              is_draft TYPE abp_behv_flag,
            END OF ty_key.
+
+    TYPES: BEGIN OF ty_location,
+             location TYPE zr_yasu_stock-location,
+           END OF ty_location.
 ENDCLASS.
 
 CLASS lhc_zr_yasu_stock IMPLEMENTATION.
@@ -75,6 +81,41 @@ CLASS lhc_zr_yasu_stock IMPLEMENTATION.
                      ) ).
 
 
+  ENDMETHOD.
+
+  METHOD calcStockAmountAll.
+    DATA plant TYPE zr_yasu_stock-Plant.
+    DATA r_location TYPE RANGE OF zr_yasu_stock-location.
+    DATA amount TYPE i.
+
+    "get plant and storage locations
+    LOOP AT keys INTO DATA(key).
+      plant = key-%param-plant.
+      r_location = VALUE #( FOR loc IN key-%param-_location (
+                           sign = 'I'
+                           option = 'EQ'
+                           low = loc-location ) ).
+      EXIT. "get the first record of the keys
+    ENDLOOP.
+
+    "select from cds view (not including draft data)
+    SELECT price,
+           stock
+      FROM zr_yasu_stock
+      WHERE plant = @plant
+      AND location IN @r_location
+      INTO TABLE @DATA(stock_t).
+
+    " calculate stock amount
+    LOOP AT stock_t INTO DATA(stock).
+      amount = amount + stock-Price * stock-Stock.
+    ENDLOOP.
+
+    " return result
+    result = VALUE #( FOR key1 IN keys (
+                       %cid = key1-%cid
+                       %param =  VALUE #( amount = amount )
+                     ) ).
   ENDMETHOD.
 
 ENDCLASS.

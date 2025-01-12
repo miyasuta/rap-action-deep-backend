@@ -20,7 +20,9 @@ authorization master( global )
    Id;
 
   field ( mandatory : create )
-   ProductId;
+   ProductId,
+   Plant,
+   Location;
 
   create;
   update;
@@ -33,6 +35,7 @@ authorization master( global )
   draft determine action Prepare;
 
   static action calcStockAmountDeep deep parameter ZA_PRODUCT_ROOT result [1] ZA_AMOUNT;
+  static action calcStockAmountAll deep parameter ZA_PLANT result [1] ZA_AMOUNT;
   action calcStockAmount result [1] ZA_AMOUNT;
 
   mapping for ZYASU_STOCK
@@ -41,6 +44,8 @@ authorization master( global )
     ProductId = product_id;
     Price = price;
     Stock = stock;
+    Plant = plant;
+    Location = location;
     CreatedBy = created_by;
     CreatedAt = created_at;
     LastChangedBy = last_changed_by;

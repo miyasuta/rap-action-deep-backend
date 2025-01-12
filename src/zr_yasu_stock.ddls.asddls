@@ -9,6 +9,8 @@ define root view entity ZR_YASU_STOCK
   product_id as ProductId,
   price as Price,
   stock as Stock,
+  plant as Plant,
+  location as Location,
   @Semantics.user.createdBy: true
   created_by as CreatedBy,
   @Semantics.systemDateTime.createdAt: true
